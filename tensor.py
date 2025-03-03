@@ -15,7 +15,7 @@ categorical_columns = ['mainroad', 'guestroom', 'basement', 'hotwaterheating', '
 for col in categorical_columns:
     Housing_data[col] = Housing_data[col].map({'yes': 1, 'no': 0})
 
-# Convert furnishing status to numerical values
+# Convert furnishing status to numerical values to avoid errors 
 Housing_data['furnishingstatus'] = Housing_data['furnishingstatus'].map({'furnished': 2, 'semi-furnished': 1, 'unfurnished': 0})
 
 # Create a 'total_rooms' column
@@ -39,7 +39,7 @@ y_scaler = MinMaxScaler()
 y_train = y_scaler.fit_transform(y_train.values.reshape(-1, 1))
 y_test = y_scaler.transform(y_test.values.reshape(-1, 1))
 
-# Build model
+# Building the model
 model = keras.Sequential([
     keras.layers.Dense(128, activation='relu', input_shape=(X_train.shape[1],)),
     keras.layers.Dense(64, activation='relu'),
@@ -55,7 +55,7 @@ model.compile(optimizer=optimizer, loss='mse', metrics=['mae'])
 # this prevents overfitting
 early_stopping = keras.callbacks.EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
-# trainging the model
+# training the model
 history = model.fit(X_train, y_train, epochs=200, batch_size=16, validation_split=0.2, callbacks=[early_stopping], verbose=1)
 
 
