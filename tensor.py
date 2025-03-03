@@ -67,3 +67,25 @@ y_pred = y_scaler.inverse_transform(model.predict(X_test))
 print(f"Mean Absolute Error (MAE): {mae}")
 print(f"Mean Squared Error (MSE): {loss}")
 
+y_test_original = y_scaler.inverse_transform(y_test.reshape(-1, 1))  
+y_pred_original = y_pred.reshape(-1, 1) 
+# Scatter plot
+plt.figure(figsize=(8, 6))
+
+# Scatter plot
+plt.scatter(y_test_original, y_pred_original, color='blue', alpha=0.5, s=20, label='Predicted vs Actual')
+
+# Prediction line
+min_val = min(y_test_original.min(), y_pred_original.min())
+max_val = max(y_test_original.max(), y_pred_original.max())
+plt.plot([min_val, max_val], [min_val, max_val], color='red', linewidth=2, linestyle='dashed', label='Perfect Prediction')
+
+plt.xlabel("Actual Prices")
+plt.ylabel("Predicted Prices")
+plt.title("Actual vs Predicted House Prices")
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.6)
+
+# Show plot
+plt.show()
+
